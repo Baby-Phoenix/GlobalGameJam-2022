@@ -4,25 +4,21 @@ using UnityEngine;
 
 public class Bounce_Bullet : MonoBehaviour
 {
-    private Rigidbody rb;
-    Vector3 lastVelocity;
     public int countBonune = 0;
-    // Start is called before the first frame update
-    private void Awake()
+    void OnCollisionEnter(Collision col)
     {
-        rb = GetComponent<Rigidbody>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (countBonune == 3)
+        if (col.gameObject.tag != "Player")
         {
-            Destroy(gameObject);
+            countBonune = countBonune + 1;
+            if (col.gameObject.tag == "Interactable")
+            {
+                Vector3 t = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement>().GetTPPos();
+                col.gameObject.GetComponent<TPObject>().TP(t);
+            }
+            if (countBonune == 3)
+            {
+                Destroy(gameObject);
+            }
         }
-    }
-    void OnCollisionExit(Collision other)
-    {
-        countBonune = countBonune + 1;
     }
 }
